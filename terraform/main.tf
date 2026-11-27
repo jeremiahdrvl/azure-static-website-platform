@@ -90,3 +90,23 @@ resource "azurerm_log_analytics_workspace" "main" {
 output "frontdoor_url" {
   value = azurerm_cdn_frontdoor_endpoint.main.host_name
 }
+
+resource "azurerm_monitor_diagnostic_setting" "storage" {
+  name = "storage-diagnostics"
+  target_resource_id = azurerm_storage_account.website.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  metric {
+    category="Transaction"
+    enabled= true
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "frontdoor" {
+  name = "frontdoor-diagnostics"
+  target_resource_id = azurerm_cdn_frontdoor_profile.main.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  enabled_log {category = "FrontDoorAccessLog"}
+  enabled_log {category = "FrontDoorWebApplicationFirewallLog"}
+  enabled_log {category = "FrontDoorHealthProbeLog"}
+   
+}
