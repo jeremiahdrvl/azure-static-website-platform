@@ -32,3 +32,9 @@ output "website_url" {
   value = azurerm_storage_account.website.primary_web_endpoint
 
 }
+
+resource "azurerm_cdn_frontdoor_profile" "main" {
+  name = "frontdoorprofile"
+  resource_group_name = azurerm_resource_group.main.name
+  sku_name = "Standard_AzureFrontDoor"
+}
