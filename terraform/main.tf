@@ -86,3 +86,7 @@ resource "azurerm_log_analytics_workspace" "main" {
   sku = "PerGB2018"
   retention_in_days = "30"
 }
+
+output "frontdoor_url" {
+  value = azurerm_cdn_frontdoor_endpoint.main.host_name
+}
